@@ -1,9 +1,12 @@
 package custom.valve;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Properties;
 
@@ -19,15 +22,29 @@ public class MyValve extends ValveBase {
 
 	public static boolean init_valve() {
 		InputStream input = null;
-	    try {
-		    String path = "./config.properties";
-		    input = new FileInputStream(path);
-			prop.load(input);
+		try {
+			String configFile = "/config.properties";
 
-		} catch (IOException ex) {
-			ex.printStackTrace();
-			return false;
+			URL ucConfig = MyValve.class.getResource(configFile);
+			File f = new File(configFile);
+			if (ucConfig != null) {
+				f = new File(ucConfig.getFile());
+			}
+			if (f.exists()) {
+				try {
+					FileInputStream fis = new FileInputStream(f);
+					prop.load(fis);
 
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+					return false;
+
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return false;
+				}
+			}
 		} finally {
 			if (input != null) {
 				try {
@@ -39,6 +56,7 @@ public class MyValve extends ValveBase {
 				}
 			}
 		}
+
 		return true;
 
 	}
@@ -55,7 +73,7 @@ public class MyValve extends ValveBase {
 		String[] invalid_ext = prop.get("invalid_ext").toString().split(",");
 		String[] blacklist = prop.get("blacklist").toString().split(",");
 		String server_path = prop.getProperty("server_path");
-//		System.out.println("inint value a7a " + server_path);
+		// System.out.println("inint value a7a " + server_path);
 
 		String uri = request.getRequestURI().toString();
 
@@ -95,19 +113,19 @@ public class MyValve extends ValveBase {
 	}
 
 	public static void main(String[] args) {
-//		System.out.println("adasdas");
+		// System.out.println("adasdas");
 
 		init_valve();
 		String[] blacklist = prop.getProperty("blacklist").toString()
 				.split(",");
 		System.out.println(prop.getProperty("blacklist").toString());
 
-//		if (in_list(blacklist, "   /examples   ")) {
-//			System.out.println("in BL  ");
-//
-//		} else {
-//			System.out.println("NOT BL  ");
-//		}
+		// if (in_list(blacklist, "   /examples   ")) {
+		// System.out.println("in BL  ");
+		//
+		// } else {
+		// System.out.println("NOT BL  ");
+		// }
 
 	}
 
