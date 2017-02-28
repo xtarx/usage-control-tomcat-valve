@@ -55,7 +55,7 @@ public class MyValve extends ValveBase {
 		String[] invalid_ext = prop.get("invalid_ext").toString().split(",");
 		String[] blacklist = prop.get("blacklist").toString().split(",");
 		String server_path = prop.getProperty("server_path");
-		System.out.println("inint value a7a " + server_path);
+//		System.out.println("inint value a7a " + server_path);
 
 		String uri = request.getRequestURI().toString();
 
