@@ -1,5 +1,6 @@
 package custom.valve;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -18,16 +19,9 @@ public class MyValve extends ValveBase {
 
 	public static boolean init_valve() {
 		InputStream input = null;
-
-		try {
-			String filename = "config.properties";
-			input = MyValve.class.getClassLoader()
-					.getResourceAsStream(filename);
-			if (input == null) {
-				return false;
-			}
-
-			// load a properties file from class path, inside static method
+	    try {
+		    String path = "./config.properties";
+		    input = new FileInputStream(path);
 			prop.load(input);
 
 		} catch (IOException ex) {
